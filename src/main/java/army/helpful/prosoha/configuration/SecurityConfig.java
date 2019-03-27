@@ -69,6 +69,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
+        http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/admin/system/state/*",
                         "/v2/api-docs",
@@ -78,10 +79,11 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
                 .antMatchers("/title/content/create").authenticated()
+                .antMatchers("/title/all/*").permitAll()
                 .antMatchers("/sso/login*").permitAll()
                 .antMatchers("/*").hasRole("ADMIN")
                 .anyRequest().permitAll();
-        http.csrf().disable();
+
 
     }
     @Bean

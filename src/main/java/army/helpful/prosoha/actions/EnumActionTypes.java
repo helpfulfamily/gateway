@@ -3,7 +3,8 @@ package army.helpful.prosoha.actions;
 public enum EnumActionTypes {
 
     publishContent("publish content"),
-    loadTitleList("load title list");
+    findByTitleWithAmount("find contents"),
+    getAllWithAmount("load title list");
 
     String description;
     EnumActionTypes(String description ){

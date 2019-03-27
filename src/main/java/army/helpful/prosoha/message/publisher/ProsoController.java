@@ -1,6 +1,7 @@
 package army.helpful.prosoha.message.publisher;
 
 
+import army.helpful.prosoha.actions.EnumActionStatus;
 import army.helpful.prosoha.actions.EnumActionTypes;
 import army.helpful.prosoha.message.RestClient;
 import army.helpful.prosoha.message.model.Content;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @EnableBinding(Source.class)
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProsoController
 {
     @Autowired
@@ -28,8 +30,8 @@ public class ProsoController
     @Autowired
     private RestClient restClient;
 
-    @PostMapping("/title/content/{action}")
-    public String publishContent(@RequestBody Content message, @PathVariable String action)
+    @PostMapping("/title/{action}")
+    public Message publishContent(@RequestBody Content message, @PathVariable String action)
     {
 
 
@@ -40,7 +42,11 @@ public class ProsoController
                 .build();
         source.output().send(resultMessage);
 
-        return "content_published";
+          resultMessage= MessageBuilder.withPayload(message)
+                .setHeader(EnumActionTypes.publishContent.name()
+                        , EnumActionStatus.SUCCESS.name()).build();
+
+        return resultMessage;
     }
 
     @GetMapping(value = "/title/all/{amount}")

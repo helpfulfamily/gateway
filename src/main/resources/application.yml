@@ -1,5 +1,5 @@
   server:
-    port: 8080 # Define a custom port instead of the default 8080
+    port: 8441 # Define a custom port instead of the default 8080
     remote_ip_header: x-forwarded-for
     protocol_header: x-forwarded-proto
     use-forward-headers: true
@@ -9,5 +9,3 @@
   spring:
     main:
       allow-bean-definition-overriding: true
-
-  PERSISTHA_URL: http://localhost:8083
