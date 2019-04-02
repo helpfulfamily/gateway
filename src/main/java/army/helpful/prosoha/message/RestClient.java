@@ -2,6 +2,7 @@ package army.helpful.prosoha.message;
 
 
 import army.helpful.prosoha.message.model.TitleMessage;
+import army.helpful.prosoha.message.model.User;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -62,6 +63,43 @@ public class RestClient {
 
         }
        return   resultMessage;
+    }
+
+    public Object post(String path, User user)  {
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new MyErrorHandler());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON_UTF8));
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        CloseableHttpClient httpClient
+                = HttpClients.custom()
+                .setSSLHostnameVerifier(new NoopHostnameVerifier())
+                .build();
+        HttpComponentsClientHttpRequestFactory requestFactory
+                = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
+
+        Object resultMessage = null;
+        ResponseEntity<String> response = null;
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
+        try {
+
+           String result= restTemplate.postForObject(PERSISTHA_URL+path, user, String.class);
+            if(response != null){
+                resultMessage= response.getBody();
+            }
+
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            LOGGER.error("Error {} when calling this rest service:: {}"
+                    , e.getRawStatusCode()
+                    , path
+                    ,"getForEntity");
+
+        }
+        return   resultMessage;
     }
 
 }
