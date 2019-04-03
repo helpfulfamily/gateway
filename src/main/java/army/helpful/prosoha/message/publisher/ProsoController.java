@@ -75,7 +75,20 @@ public class ProsoController
         contentList= message.getContentList();
         return contentList;
     }
+    @PostMapping(value = "/user/changeProfilePhotoUrl", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void changeProfilePhotoUrl(@RequestBody User user) {
+        Message resultMessage =  MessageBuilder
+                .withPayload(user)
+                .setHeader("action"
+                        , "changeProfilePhotoUrl")
+                .build();
+        source.output().send(resultMessage);
 
+
+
+        logger.info("changeProfilePhotoUrl", user);
+
+    }
     @GetMapping(value = "/user/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public User getUser(@PathVariable String username) {
         User user = (User) restClient.getForEntity("/user/"+username,   User.class);

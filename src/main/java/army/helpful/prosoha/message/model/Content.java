@@ -5,7 +5,7 @@ public class Content extends BasicModel {
 
     private String text;
     private Title title;
-
+    private User user;
 
     private boolean firstContent;
 
@@ -37,6 +37,13 @@ public class Content extends BasicModel {
         this.firstContent = firstContent;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String toString(){
         return   this.getClass().getSimpleName();
