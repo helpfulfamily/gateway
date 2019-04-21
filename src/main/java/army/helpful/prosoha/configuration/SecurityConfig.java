@@ -1,9 +1,7 @@
 package army.helpful.prosoha.configuration;
 
 import org.keycloak.adapters.KeycloakConfigResolver;
-import org.keycloak.adapters.KeycloakDeployment;
-import org.keycloak.adapters.KeycloakDeploymentBuilder;
-import org.keycloak.adapters.spi.HttpFacade;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 @KeycloakConfiguration
@@ -41,36 +38,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     }
 
     @Bean
-    public KeycloakConfigResolver keycloakConfigResolver() {
-        return new KeycloakConfigResolver() {
-
-            private KeycloakDeployment keycloakDeployment;
-
-            @Override
-            public KeycloakDeployment resolve(HttpFacade.Request facade) {
-                if (keycloakDeployment != null) {
-                    return keycloakDeployment;
-                }
-
-                String path = "/keycloak.json";
-                InputStream configInputStream = getClass().getResourceAsStream(path);
-
-                if (configInputStream == null) {
-                    throw new RuntimeException("Could not load Keycloak deployment info: " + path);
-                } else {
-                    keycloakDeployment = KeycloakDeploymentBuilder.build(configInputStream);
-                }
-
-                return keycloakDeployment;
-            }
-        };
+    public KeycloakConfigResolver KeycloakConfigResolver() {
+        return new KeycloakSpringBootConfigResolver();
     }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-        http.csrf().disable();
-        http.authorizeRequests()
+        http.cors().and().authorizeRequests()
                 .antMatchers("/admin/system/state/*",
                         "/v2/api-docs",
                         "/configuration/ui",
@@ -78,11 +54,11 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
-                .antMatchers("/title/content/create").authenticated()
-                .antMatchers("/title/all/*").permitAll()
+                .antMatchers("/transaction/*").authenticated()
                 .antMatchers("/sso/login*").permitAll()
                 .antMatchers("/*").hasRole("ADMIN")
                 .anyRequest().permitAll();
+        http.csrf().disable();
 
 
     }
@@ -90,9 +66,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://www.helpful.army"
+        configuration.setAllowedOrigins(Arrays.asList("https://www.helpful.family"
                 , "https://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
