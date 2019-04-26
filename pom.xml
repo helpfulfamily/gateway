@@ -8,11 +8,11 @@
 		<version>2.1.0.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>army.helpful</groupId>
-	<artifactId>prosoha</artifactId>
+	<groupId>family.helpful</groupId>
+	<artifactId>gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>prosoha</name>
-	<description>Demo project for Spring Boot</description>
+	<name>gateway</name>
+	<description>Gateway for Helpful Family's REST services</description>
 
 	<properties>
 		<java.version>1.8</java.version>

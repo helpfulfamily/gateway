@@ -91,7 +91,7 @@ if [[ -n "$app_name" ]]; then
             create_project
 
             else
-                echo "Countinue without re-creating helpfularmy project"
+                echo "Countinue without re-creating helpful project"
             fi
 
 
