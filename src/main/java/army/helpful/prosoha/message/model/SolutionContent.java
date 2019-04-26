@@ -1,16 +1,20 @@
 package army.helpful.prosoha.message.model;
 
 
-public class SolutionContent extends BasicModel {
+
+
+public class SolutionContent extends BasicModel    {
 
     private String text;
-
 
     private ProblemTitle problemTitle;
 
     private SolutionTitle solutionTitle;
 
     private User user;
+
+
+    Long currentThankAmount;
 
 
     private boolean firstContent;
@@ -54,5 +58,13 @@ public class SolutionContent extends BasicModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Long getCurrentThankAmount() {
+        return currentThankAmount;
+    }
+
+    public void setCurrentThankAmount(Long currentThankAmount) {
+        this.currentThankAmount = currentThankAmount;
     }
 }

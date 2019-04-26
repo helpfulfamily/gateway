@@ -1,18 +1,22 @@
 package army.helpful.prosoha.message.model;
 
 
+import java.util.Date;
+
+
 public class BasicModel {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
+    private Date createDate;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -24,4 +28,11 @@ public class BasicModel {
         this.name = name;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 }
