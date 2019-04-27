@@ -3,10 +3,11 @@ package family.helpful.gateway.message.publisher;
 
 import family.helpful.gateway.actions.EnumActionStatus;
 import family.helpful.gateway.message.RestClient;
-import family.helpful.gateway.message.model.SolutionContent;
-import family.helpful.gateway.message.model.SolutionContentMessage;
-import family.helpful.gateway.message.model.SolutionTitle;
-import family.helpful.gateway.message.model.SolutionTitleMessage;
+import family.helpful.gateway.message.model.*;
+import io.swagger.annotations.*;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,18 @@ public class SolutionController
     private static final Logger logger = LoggerFactory.getLogger(SolutionController.class);
 
     @PostMapping("/publishSolutionContent")
-    public Message publishContent(@RequestBody SolutionContent message)
+    @ApiOperation(value = "Publish Content")
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token", required = true, dataType = "string", paramType = "header"))
+    @ApiResponses({@ApiResponse(code = 200, message = "Publish Content OK")})
+    public Message publishContent(KeycloakAuthenticationToken kat, @RequestBody SolutionContent message)
     {
+        KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) kat.getPrincipal();
+        AccessToken token= keycloakPrincipal.getKeycloakSecurityContext().getToken();
+        String senderUsername= token.getPreferredUsername();
+        User user= new User();
+        user.setUsername(senderUsername);
 
+        message.setUser(user);
 
         Message resultMessage =  MessageBuilder
                 .withPayload(message)

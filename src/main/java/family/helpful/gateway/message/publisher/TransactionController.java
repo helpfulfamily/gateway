@@ -34,9 +34,9 @@ public class TransactionController
     private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @PostMapping(value = "/sendThankCoin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Is blocked in NAR.")
+    @ApiOperation(value = "Start Transaction")
     @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token", required = true, dataType = "string", paramType = "header"))
-    @ApiResponses({@ApiResponse(code = 200, message = "NAR status.")})
+    @ApiResponses({@ApiResponse(code = 200, message = "Start Transaction OK")})
     public void sendThankCoin(KeycloakAuthenticationToken kat, @RequestBody Transaction transaction) {
 
         KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) kat.getPrincipal();
