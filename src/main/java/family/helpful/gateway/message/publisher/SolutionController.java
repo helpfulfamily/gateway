@@ -63,6 +63,20 @@ public class SolutionController
         return resultMessage;
     }
 
+
+    @GetMapping(value = "/all/{amount}/{channel}")
+    public List<SolutionTitle> getAll(@PathVariable int amount,  @PathVariable String channel) {
+        List<SolutionTitle> titleList= null;
+
+        SolutionTitleMessage message= (SolutionTitleMessage)
+                restClient.getForEntity("/solutiontitle/all/"+ amount+"/"+ channel,
+                SolutionTitleMessage.class);
+
+        titleList= message.getSolutionTitleList();
+
+        return titleList;
+    }
+
     @GetMapping(value = "/all/{amount}")
     public List<SolutionTitle> getAll(@PathVariable int amount) {
         List<SolutionTitle> titleList= null;

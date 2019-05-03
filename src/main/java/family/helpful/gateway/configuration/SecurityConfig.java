@@ -66,7 +66,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     CorsConfigurationSource corsConfigurationSource()
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://www.helpful.family"
+        configuration.setAllowedOrigins(Arrays.asList("https://list.helpful.family"
                 , "https://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         configuration.addAllowedHeader("*");

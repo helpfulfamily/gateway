@@ -18,6 +18,9 @@ import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -63,12 +66,12 @@ public class ProblemController
 
         return resultMessage;
     }
-
-    @GetMapping(value = "/all/{amount}")
-    public List<ProblemTitle> getAll(@PathVariable int amount) {
+    @GetMapping(value = "/all/{amount}/{channel}")
+    public List<ProblemTitle> getAll(@PathVariable int amount,  @PathVariable String channel) {
         List<ProblemTitle> titleList= null;
 
-        ProblemTitleMessage message= (ProblemTitleMessage) restClient.getForEntity("/problemtitle/all/"+ amount,
+        ProblemTitleMessage message= (ProblemTitleMessage) restClient
+                .getForEntity("/problemtitle/all/"+ amount+"/"+ channel,
                 ProblemTitleMessage.class);
 
         titleList= message.getProblemTitleList();
@@ -76,11 +79,27 @@ public class ProblemController
         return titleList;
     }
 
+    @GetMapping(value = "/all/{amount}")
+    public List<ProblemTitle> getAll(@PathVariable int amount) {
+        List<ProblemTitle> titleList= null;
+
+        ProblemTitleMessage message= (ProblemTitleMessage) restClient
+                .getForEntity("/problemtitle/all/"+ amount,
+                        ProblemTitleMessage.class);
+
+        titleList= message.getProblemTitleList();
+
+        return titleList;
+    }
 
     @GetMapping(value = "/contents/{name}/{amount}")
     public List<ProblemContent> getContentsByTitle(@PathVariable String name, @PathVariable int amount) {
         List<ProblemContent> contentList= null;
-
+      try {
+            name =URLEncoder.encode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         ProblemContentMessage message= (ProblemContentMessage) restClient.getForEntity("/problemtitle/contents/"+name+"/"+amount
                 , ProblemContentMessage.class);
 

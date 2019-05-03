@@ -10,6 +10,7 @@ public class ProblemTitle extends BasicModel {
       private List<ProblemContent> problemContents = new ArrayList<>();
       private User user;
       Long currentThankAmount;
+      private List<Channel> channels = new ArrayList<>();
 
     public Long getCurrentThankAmount() {
         return currentThankAmount;
@@ -25,5 +26,13 @@ public class ProblemTitle extends BasicModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
     }
 }

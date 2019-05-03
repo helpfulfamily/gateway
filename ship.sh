@@ -6,10 +6,10 @@ app_version=$2
 build_local_project () {
                 echo ">>>>>>>>>>>>>>>>>>> BUILDING LOCAL PROJECT"
 
-                if [[ $app_name =~ "proso" ]]; then
+                if [[ $app_name =~ "gateway" ]]; then
                                  mvn clean install -Dspring.profiles.active=dev
                     else
-                                 echo "App name does not contain 'proso'. Therefore exiting."
+                                 echo "App name does not contain 'gateway'. Therefore exiting."
                                  exit 0
                      fi
 
@@ -51,7 +51,7 @@ openshift_process(){
 
 }
 configmap_process(){
-if [[ $app_name =~ "proso" ]]; then
+if [[ $app_name =~ "gateway" ]]; then
      echo ">>>>>>>>>>>>>>>>>>> OPENSHIFT: CREATE ConfigMap "
 
  GEN_CONFIG=$(sed  '/^\s*$/d'  config/application-pr.properties \
