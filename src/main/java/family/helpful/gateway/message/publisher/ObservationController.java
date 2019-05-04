@@ -2,8 +2,8 @@ package family.helpful.gateway.message.publisher;
 
 
 import family.helpful.gateway.message.RestClient;
+import family.helpful.gateway.message.model.ObservationRequestSignal;
 import family.helpful.gateway.message.model.Transaction;
-
 import family.helpful.gateway.message.model.User;
 import io.swagger.annotations.*;
 import org.keycloak.KeycloakPrincipal;
@@ -22,47 +22,43 @@ import org.springframework.web.bind.annotation.*;
 
 @EnableBinding(Source.class)
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/observation")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class TransactionController
+public class ObservationController
 {
     @Autowired
     private Source source;
 
     @Autowired
     private RestClient restClient;
-    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
-    @PostMapping(value = "/sendThankCoin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "Start Transaction")
+    @PostMapping(value = "/sendObservationRequestSignal", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "sendObservationRequestSignal")
     @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token", required = true, dataType = "string", paramType = "header"))
-    @ApiResponses({@ApiResponse(code = 200, message = "Start Transaction OK")})
-    public void sendThankCoin(KeycloakAuthenticationToken kat, @RequestBody Transaction transaction) {
+    @ApiResponses({@ApiResponse(code = 200, message = "Send Observation Request Signal OK")})
+    public void sendObservationRequestSignal(KeycloakAuthenticationToken kat, @RequestBody ObservationRequestSignal observationRequestSignal) {
 
         KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) kat.getPrincipal();
         AccessToken token= keycloakPrincipal.getKeycloakSecurityContext().getToken();
+
         String senderUsername= token.getPreferredUsername();
-        User sender= new User();
-        sender.setUsername(senderUsername);
 
-        transaction.setSender(sender);
+        observationRequestSignal.setObserverUsername(senderUsername);
 
 
-        String receiverUsername= transaction.getReceiver().getUsername();
-        User receiver= new User();
-        receiver.setUsername(receiverUsername);
-        transaction.setReceiver(receiver);
+
 
         Message resultMessage =  MessageBuilder
-                .withPayload(transaction)
+                .withPayload(observationRequestSignal)
                 .setHeader("action"
-                        , "sendThankCoin")
+                        , "sendObservationRequestSignal")
                 .build();
         source.output().send(resultMessage);
 
 
 
-        logger.info("sendThankCoin", transaction);
+        logger.info("sendObservationRequestSignal", observationRequestSignal);
 
     }
 

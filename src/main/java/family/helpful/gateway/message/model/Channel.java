@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Channel extends BasicModel {
 
+    Long currentObserverAmount;
 
     Long currentThankAmount;
     private List<ProblemTitle> problemTitles = new ArrayList<>();
@@ -24,5 +25,13 @@ public class Channel extends BasicModel {
 
     public void setCurrentThankAmount(Long currentThankAmount) {
         this.currentThankAmount = currentThankAmount;
+    }
+
+    public Long getCurrentObserverAmount() {
+        return currentObserverAmount;
+    }
+
+    public void setCurrentObserverAmount(Long currentObserverAmount) {
+        this.currentObserverAmount = currentObserverAmount;
     }
 }
