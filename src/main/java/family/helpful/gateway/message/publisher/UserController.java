@@ -3,6 +3,7 @@ package family.helpful.gateway.message.publisher;
 
 import family.helpful.gateway.message.RestClient;
 import family.helpful.gateway.message.model.User;
+import family.helpful.gateway.message.model.UserMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,4 +70,16 @@ public class UserController
          restClient.post("/user/create",   user);
 
     }
+    @GetMapping(value = "/all/{amount}/{channel}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UserMessage getAll(@PathVariable int amount, @PathVariable String channel) {
+
+
+        UserMessage userMessage=  (UserMessage) restClient
+                      .getForEntity("/user/all/"+amount+"/"+channel,
+                              UserMessage.class);
+
+
+        return userMessage;
+    }
+
 }

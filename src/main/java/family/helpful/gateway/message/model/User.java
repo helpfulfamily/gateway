@@ -21,6 +21,7 @@ public class User extends BasicModel {
     private List<SolutionContent> solutionContents = new ArrayList<>();
     private List<ProblemTitle> problemTitles = new ArrayList<>();
     private List<SolutionTitle> solutionTitles = new ArrayList<>();
+    private List<Channel> channels = new ArrayList<>();
    public String toString(){
 
         return   this.getClass().getSimpleName();
@@ -104,5 +105,13 @@ public class User extends BasicModel {
 
     public void setSolutionTitles(List<SolutionTitle> solutionTitles) {
         this.solutionTitles = solutionTitles;
+    }
+
+    public List<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(List<Channel> channels) {
+        this.channels = channels;
     }
 }
