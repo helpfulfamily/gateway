@@ -7,6 +7,7 @@ public class ObservationRequestSignal {
     String channelName;
     Long currentObserverAmount;
     String objectType;
+    boolean observe;
 
     public Long getObserverUserId() {
         return observerUserId;
@@ -54,5 +55,13 @@ public class ObservationRequestSignal {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public boolean isObserve() {
+        return observe;
+    }
+
+    public void setObserve(boolean observe) {
+        this.observe = observe;
     }
 }
