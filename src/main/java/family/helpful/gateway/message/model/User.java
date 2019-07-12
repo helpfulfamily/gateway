@@ -1,6 +1,8 @@
 package family.helpful.gateway.message.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,10 @@ public class User extends BasicModel {
     private List<SolutionContent> solutionContents = new ArrayList<>();
     private List<ProblemTitle> problemTitles = new ArrayList<>();
     private List<SolutionTitle> solutionTitles = new ArrayList<>();
+
     private List<Channel> channels = new ArrayList<>();
-   public String toString(){
+
+    public String toString(){
 
         return   this.getClass().getSimpleName();
     }

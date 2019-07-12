@@ -4,6 +4,7 @@ package family.helpful.gateway.message.publisher;
 import family.helpful.gateway.actions.EnumActionStatus;
 import family.helpful.gateway.message.RestClient;
 import family.helpful.gateway.message.model.*;
+import family.helpful.gateway.util.KeycloakUtil;
 import io.swagger.annotations.*;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -34,30 +35,32 @@ public class FamilyController
 
     @PostMapping("/createFamily")
     @ApiOperation(value = "Create Family")
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token", required = true, dataType = "string", paramType = "header"))
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token",
+                             required = true, dataType = "string", paramType = "header"))
     @ApiResponses({@ApiResponse(code = 200, message = "Create Family OK")})
-    public Message createFamily(KeycloakAuthenticationToken kat, @RequestBody Family familyObject)
+    public void createFamily(KeycloakAuthenticationToken kat, @RequestBody Family familyObject)
     {
-        KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) kat.getPrincipal();
-        AccessToken token= keycloakPrincipal.getKeycloakSecurityContext().getToken();
-        String senderUsername= token.getPreferredUsername();
-        User user= new User();
-        user.setUsername(senderUsername);
+        // In order to get user via Keycloak
 
+        User user= new User();
+        user.setUsername(KeycloakUtil.getUserName(kat));
+
+        // Sets user of Family object envelope
         familyObject.setUser(user);
 
-        Message resultMessage =  MessageBuilder
+        // Prepare Message envelope to use it in the Persist side.
+        Message familyObjectMessage =  MessageBuilder
                 .withPayload(familyObject)
                 .setHeader("action"
                         , "createFamily")
                 .build();
 
-        source.output().send(resultMessage);
+        // Sends message to Persist side.
+        source.output().send(familyObjectMessage);
 
+        // It is not directly related to current algorithm and just used to be informed about process.
+        logger.info("Message sent to Persist side: ", familyObject);
 
-        logger.info("action", familyObject);
-
-        return resultMessage;
     }
 
 

@@ -1,6 +1,7 @@
 package family.helpful.gateway.configuration;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -27,6 +28,7 @@ public class SwaggerConfig {
                .paths(PathSelectors.any())
                .apis(RequestHandlerSelectors.basePackage("family.helpful"))
                .build()
+               .ignoredParameterTypes(KeycloakAuthenticationToken.class)
                .useDefaultResponseMessages(false);
    }
 

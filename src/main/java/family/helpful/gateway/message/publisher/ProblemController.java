@@ -35,34 +35,33 @@ public class ProblemController
 
     @Autowired
     private RestClient restClient;
+
+
     private static final Logger logger = LoggerFactory.getLogger(ProblemController.class);
 
     @PostMapping("/publishProblemContent")
     @ApiOperation(value = "Publish Content")
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token", required = true, dataType = "string", paramType = "header"))
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token",
+            required = true, dataType = "string", paramType = "header"))
     @ApiResponses({@ApiResponse(code = 200, message = "Publish Content OK")})
-    public Message publishContent(KeycloakAuthenticationToken kat, @RequestBody ProblemContent message)
+    public Message publishContent(KeycloakAuthenticationToken kat, @RequestBody ProblemContent problemContent)
     {
-        KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) kat.getPrincipal();
-        AccessToken token= keycloakPrincipal.getKeycloakSecurityContext().getToken();
-        String senderUsername= token.getPreferredUsername();
-        User user= new User();
-        user.setUsername(senderUsername);
 
-        message.setUser(user);
 
+
+        // Prepare Message envelope to use it in the Persist side.
         Message resultMessage =  MessageBuilder
-                .withPayload(message)
+                .withPayload(problemContent)
                 .setHeader("action"
                         , "publishProblemContent")
                 .build();
+
+        // Sends message to Persist side.
         source.output().send(resultMessage);
 
-          resultMessage= MessageBuilder.withPayload(message)
-                .setHeader("publishProblemContent"
-                        , EnumActionStatus.SUCCESS.name()).build();
 
-        logger.info("action", message);
+        // It is not directly related to current algorithm and just used to be informed about process.
+        logger.info("Message sent to Persist side: ", resultMessage);
 
         return resultMessage;
     }
