@@ -59,6 +59,16 @@ public class UserController
         logger.info("changeProfilePhotoUrl", user);
 
     }
+    @GetMapping(value = "/userLoggedIn/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void userLoggedIn(@PathVariable String username) {
+        User user = (User) restClient.getForEntity("/user/"+username,   User.class);
+        Message resultMessage =  MessageBuilder
+                .withPayload(user)
+                .setHeader("action"
+                        , "userLoggedIn")
+                .build();
+        source.output().send(resultMessage);
+    }
     @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public User getUser(@PathVariable String username) {
         User user = (User) restClient.getForEntity("/user/"+username,   User.class);
