@@ -3,6 +3,7 @@ package family.helpful.gateway.message.publisher;
 
 import family.helpful.gateway.message.RestClient;
 import family.helpful.gateway.message.model.User;
+import family.helpful.gateway.message.model.UserJoinMessage;
 import family.helpful.gateway.message.model.UserMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +60,14 @@ public class UserController
         logger.info("changeProfilePhotoUrl", user);
 
     }
-    @GetMapping(value = "/userLoggedIn/{username}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void userLoggedIn(@PathVariable String username) {
+    @GetMapping(value = "/userLoggedIn/{username}/{channelName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void userLoggedIn(@PathVariable String username, @PathVariable String channelName) {
         User user = (User) restClient.getForEntity("/user/"+username,   User.class);
+        UserJoinMessage userJoinMessage = new UserJoinMessage();
+        userJoinMessage.setUser(user);
+        userJoinMessage.setChannelName(channelName);
         Message resultMessage =  MessageBuilder
-                .withPayload(user)
+                .withPayload(userJoinMessage)
                 .setHeader("action"
                         , "userLoggedIn")
                 .build();

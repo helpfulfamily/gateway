@@ -67,7 +67,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://list.helpful.family"
-                , "https://localhost:3000"));
+                , "https://localhost:3000", "https://clientreactchat-webclient.b9ad.pro-us-east-1.openshiftapps.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         configuration.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
