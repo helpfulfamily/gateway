@@ -60,16 +60,19 @@ public class UserController
         logger.info("changeProfilePhotoUrl", user);
 
     }
-    @GetMapping(value = "/userLoggedIn/{username}/{channelName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public void userLoggedIn(@PathVariable String username, @PathVariable String channelName) {
+    @GetMapping(value = "/userChannelJoinPart/{username}/{channelName}/{actionType}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void userChannelJoinPart(@PathVariable String username, @PathVariable String channelName
+                                 , @PathVariable String actionType) {
         User user = (User) restClient.getForEntity("/user/"+username,   User.class);
         UserJoinMessage userJoinMessage = new UserJoinMessage();
         userJoinMessage.setUser(user);
         userJoinMessage.setChannelName(channelName);
+        userJoinMessage.setActionType(actionType);
+
         Message resultMessage =  MessageBuilder
                 .withPayload(userJoinMessage)
                 .setHeader("action"
-                        , "userLoggedIn")
+                        , "userChannelJoinPart")
                 .build();
         source.output().send(resultMessage);
     }
