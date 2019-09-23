@@ -3,7 +3,6 @@ package family.helpful.gateway.message.publisher;
 
 import family.helpful.gateway.message.RestClient;
 import family.helpful.gateway.message.model.*;
-
 import family.helpful.gateway.util.KeycloakUtil;
 import io.swagger.annotations.*;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -38,6 +37,7 @@ public class ChannelController
     @GetMapping(value = "/{channelName}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Channel getChannel(@PathVariable String channelName) {
         Channel channel = (Channel) restClient.getForEntity("/channel/"+channelName,   Channel.class);
+
         return channel;
     }
 
@@ -114,18 +114,20 @@ public class ChannelController
         logger.info("Message sent to Persist side: ", channelObject);
 
     }
-    @GetMapping(value = "/contents/{name}/{amount}")
-    public List<ChannelContent> getContentsByTitle(@PathVariable String name, @PathVariable int amount) {
-        List<ChannelContent> contentList= null;
+
+    @GetMapping(value = "/contents/{channelName}/{pageNumber}")
+    public List<ChannelContent> getContentsByTitle(@PathVariable String channelName, @PathVariable int pageNumber) {
+        List<ChannelContent> contents = null;
         try {
-            name = URLEncoder.encode(name, "UTF-8");
+            channelName = URLEncoder.encode(channelName, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        ChannelContentMessage message= (ChannelContentMessage) restClient.getForEntity("/channel/contents/"+name+"/"+amount
-                , ChannelContentMessage.class);
+        ChannelContentMessage message = (ChannelContentMessage) restClient
+                .getForEntity("/channel/contents/" + channelName + "/" + pageNumber
+                        , ChannelContentMessage.class);
 
-        contentList= message.getContents();
-        return contentList;
+        contents = message.getContents();
+        return contents;
     }
 }

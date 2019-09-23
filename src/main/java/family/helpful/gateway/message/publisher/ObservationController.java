@@ -1,10 +1,7 @@
 package family.helpful.gateway.message.publisher;
 
 
-import family.helpful.gateway.message.RestClient;
 import family.helpful.gateway.message.model.ObservationRequestSignal;
-import family.helpful.gateway.message.model.Transaction;
-import family.helpful.gateway.message.model.User;
 import io.swagger.annotations.*;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -29,8 +26,7 @@ public class ObservationController
     @Autowired
     private Source source;
 
-    @Autowired
-    private RestClient restClient;
+
     private static final Logger logger = LoggerFactory.getLogger(ObservationController.class);
 
     @PostMapping(value = "/sendObservationRequestSignal", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
