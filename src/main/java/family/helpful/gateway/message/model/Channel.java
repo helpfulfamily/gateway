@@ -12,15 +12,8 @@ public class Channel extends BasicModel {
     private User user;
     private List<ChannelContent> channelContents = new ArrayList<>();
 
-    private List<ProblemTitle> problemTitles = new ArrayList<>();
 
-    public List<ProblemTitle> getProblemTitles() {
-        return problemTitles;
-    }
 
-    public void setProblemTitles(List<ProblemTitle> problemTitles) {
-        this.problemTitles = problemTitles;
-    }
 
     public Long getCurrentThankAmount() {
         return currentThankAmount;
