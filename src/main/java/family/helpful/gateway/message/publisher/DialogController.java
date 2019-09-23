@@ -32,9 +32,12 @@ public class DialogController {
     private RestClient restClient;
 
     @GetMapping(value = "/contents/{senderID}/{receiverID}/{pageNumber}")
-    public List<DialogContent> getContentsByTitle(@PathVariable long senderID,
-                                                  @PathVariable long receiverID,
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization", value = "JWT authorization token",
+            required = true, dataType = "string", paramType = "header"))
+    public List<DialogContent> getContentsByTitle(KeycloakAuthenticationToken kat,
+                                                  @PathVariable String receiverID,
                                                   @PathVariable int pageNumber) {
+        String senderID = KeycloakUtil.getUserName(kat);
         List<DialogContent> contents = null;
 
         DialogContentMessage message = (DialogContentMessage) restClient
